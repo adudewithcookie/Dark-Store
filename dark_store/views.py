@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -7,11 +7,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Location, Shelf
 from .serializers import LocationSerializer, ShelfSerializer
 
-class LocationViewSet(viewsets.ModelViewSet):
 
+class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
-    
 
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'DELETE']:
@@ -29,12 +28,11 @@ class LocationViewSet(viewsets.ModelViewSet):
 class ShelfViewSet(viewsets.ModelViewSet):
     queryset = Shelf.objects.all()
     serializer_class = ShelfSerializer
-    
+
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'DELETE']:
             return [IsAuthenticated()]
         return [AllowAny()]
-
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -43,8 +41,4 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, _ = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
+        return Response({'token': token.key, 'user_id': user.pk, 'email': user.email})

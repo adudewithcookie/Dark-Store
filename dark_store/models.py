@@ -18,5 +18,8 @@ class Shelf(models.Model):
     weight_capacity = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "shelves"
+        
     def __str__(self):
         return f"Shelf {self.identifier} at {self.location.name}"
